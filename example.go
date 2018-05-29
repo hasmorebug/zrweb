@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/gin-gonic/gin/json"
+	"io/ioutil"
 	"net/http"
 	"time"
 )
@@ -23,7 +24,6 @@ type Post struct {
 //
 func writeExample(w http.ResponseWriter, r *http.Request) {
 	str := `<html><head><title>Go Web Programming</title></head><body><h1>Hello World</h1></body></html>`
-
 	w.Write([]byte(str))
 }
 
@@ -46,8 +46,8 @@ func jsonExample(w http.ResponseWriter, r *http.Request) {
 		User:    "Sau Sheong",
 		Threads: []string{"first", "second", "third"},
 	}
-	json, _ := json.Marshal(post)
-	w.Write(json)
+	js, _ := json.Marshal(post)
+	w.Write(js)
 }
 
 /////////Cookie/////////
@@ -130,5 +130,64 @@ func showMessage(w http.ResponseWriter, r *http.Request) {
 		http.SetCookie(w, &rc)
 		val, _ := base64.URLEncoding.DecodeString(c.Value)
 		fmt.Fprintln(w, string(val))
+	}
+}
+
+/////////Request/////////
+//
+func headers(w http.ResponseWriter, r *http.Request) {
+	h := r.Header
+	fmt.Fprintln(w, h)
+	fmt.Fprintln(w, h["Accept-Encoding"])
+	fmt.Fprintln(w, h.Get("Accept-Encoding"))
+}
+
+func body(w http.ResponseWriter, r *http.Request) {
+	l := r.ContentLength
+	body := make([]byte, l)
+	r.Body.Read(body)
+	fmt.Fprintln(w, body)
+}
+
+func process(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	fmt.Fprintln(w, r.Form)
+}
+
+func process2(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	fmt.Fprintln(w, r.PostForm)
+}
+
+func process3(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(1024)
+	fmt.Fprintln(w, r.MultipartForm)
+}
+
+func process4(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(1024)
+	fmt.Fprintln(w, r.MultipartForm)
+
+	fileHeader := r.MultipartForm.File["uploaded"]
+	if fileHeader != nil {
+		file, err := fileHeader[0].Open()
+		if err == nil {
+			data, err := ioutil.ReadAll(file)
+			if err == nil {
+				fmt.Fprintln(w, data)
+			}
+		}
+	} else {
+		fmt.Fprintln(w, "upload error")
+	}
+}
+
+func process5(w http.ResponseWriter, r *http.Request) {
+	file, _, err := r.FormFile("uploaded")
+	if err == nil {
+		data, err := ioutil.ReadAll(file)
+		if err == nil {
+			fmt.Fprintln(w, data)
+		}
 	}
 }

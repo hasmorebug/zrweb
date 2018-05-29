@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>POST TEST</title>
+</head>
+<body>
+    <div>
+        <form action="/request/example3?hello=world&thread=123" method="POST" enctype="application/x-www-form-urlencoded" title="Hello1">
+            <input type="text" name="hello" value="sau cheong"/>
+            <input type="text" name="post" value="456"/>
+            <input type="submit" value="process"/>
+        </form>
+    </div>
+    <div>
+        <form action="/request/example4?hello=world&thread=123" method="POST" enctype="application/x-www-form-urlencoded" title="Hello2">
+            <input type="text" name="hello" value="sau cheong"/>
+            <input type="text" name="post" value="456"/>
+            <input type="submit" value="process2"/>
+        </form>
+    </div>
+    <div>
+        <form action="/request/example5?hello=world&thread=123" method="POST" enctype="multipart/form-data" title="Hello3">
+            <input type="text" name="hello" value="sau cheong"/>
+            <input type="text" name="post" value="456"/>
+            <input type="submit" value="process3"/>
+        </form>
+    </div>
+    <div>
+        <form action="/request/example6" method="POST" enctype="multipart/form-data" title="Hello4">
+            <input type="text" name="hello" value="sau cheong"/>
+            <input type="text" name="post" value="456"/>
+            <input type="file" value="uploaded">
+            <input type="submit">
+        </form>
+    </div>
+    <div>
+        <form action="/request/example7" method="POST" enctype="multipart/form-data">
+            <input type="text" name="hello" value="sau cheong"/>
+            <input type="text" name="post" value="456"/>
+            <input type="file" value="uploaded">
+            <input type="submit">
+        </form>
+    </div>
+</body>
+</html>
