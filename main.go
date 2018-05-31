@@ -5,10 +5,22 @@ import (
 )
 
 func main() {
+
+}
+
+//
+func startServer() {
+	initHandler()
+
 	server := http.Server{
 		Addr: ":8080",
 	}
 
+	server.ListenAndServe()
+}
+
+//
+func initHandler() {
 	files := http.FileServer(http.Dir("./template"))
 
 	http.Handle("/static/", http.StripPrefix("/static/", files))
@@ -41,6 +53,4 @@ func main() {
 	http.HandleFunc("/response/example3", headerExample)
 	http.HandleFunc("/response/example4", jsonExample)
 	/////////
-
-	server.ListenAndServe()
 }
