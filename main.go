@@ -11,7 +11,10 @@ func main() {
 }
 
 func xmlFunc() {
-	parseXml()
+	encodeXml()
+	//createXml()
+	//decodeXml()
+	//parseXml()
 }
 
 func jsonFunc() {
