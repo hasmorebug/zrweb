@@ -5,7 +5,15 @@ import (
 )
 
 func main() {
+	jsonFunc()
+	//startServer()
+}
 
+func jsonFunc() {
+	encodeJson()
+	//createJson()
+	//decodeJson()
+	//parseJson()
 }
 
 //
