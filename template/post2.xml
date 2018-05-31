@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<post id="1">
+	<content>Hello World!</content>
+	<author id="2">Sau Shenong</author>
+	<comments>
+		<comment id="1">
+			<content>Have a grate day!</content>
+			<author id="1">Betty</author>
+		</comment>
+	</comments>
+</post>
