@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -140,4 +141,38 @@ func encodeJson() {
 	if err != nil {
 		fmt.Println("Error encoding JSON to file:", err)
 	}
+}
+
+//
+type PostXml struct {
+	XMLName xml.Name  `xml:"post"`
+	Id      string    `xml:"id,attr"`
+	Content string    `xml:"content"`
+	Author  AuthorXml `xml:"author"`
+	Xml     string    `xml:",innerxml"`
+}
+
+type AuthorXml struct {
+	Id   string `xml:"id,attr"`
+	Name string `xml:",chardata"`
+}
+
+func parseXml() {
+	xmlFile, err := os.Open("template/post.xml")
+	if err != nil {
+		fmt.Println("Error open XML file:", err)
+		return
+	}
+
+	defer xmlFile.Close()
+
+	xmlData, err := ioutil.ReadAll(xmlFile)
+	if err != nil {
+		fmt.Println("Error reading XML file:", err)
+		return
+	}
+
+	var post PostXml
+	xml.Unmarshal(xmlData, &post)
+	fmt.Println(post)
 }

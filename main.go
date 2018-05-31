@@ -5,15 +5,20 @@ import (
 )
 
 func main() {
-	jsonFunc()
+	xmlFunc()
+	//jsonFunc()
 	//startServer()
+}
+
+func xmlFunc() {
+	parseXml()
 }
 
 func jsonFunc() {
 	encodeJson()
-	//createJson()
-	//decodeJson()
-	//parseJson()
+	createJson()
+	decodeJson()
+	parseJson()
 }
 
 //
