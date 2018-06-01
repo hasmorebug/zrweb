@@ -10,6 +10,7 @@ func init() {
 
 
 func main() {
+	databaseExample2()
 	//databaseExample()
 	//xmlFunc()
 	//jsonFunc()
