@@ -5,12 +5,13 @@ import (
 )
 
 func init() {
-	connectDB()
+	//connectDB()
+	initSqlx()
 }
 
-
 func main() {
-	databaseExample2()
+	ormExample()
+	//databaseExample2()
 	//databaseExample()
 	//xmlFunc()
 	//jsonFunc()
