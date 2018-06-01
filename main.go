@@ -8,6 +8,7 @@ func init() {
 	connectDB()
 }
 
+
 func main() {
 	databaseExample()
 	//xmlFunc()

@@ -19,7 +19,7 @@ var Db *sql.DB
 func connectDB() {
 	var err error
 
-	Db, err = sql.Open("postgres", "user=postgres dhname=postgres password=postgres sslmode=disable")
+	Db, err = sql.Open("postgres", "user=postgres dbname=postgres password=postgres sslmode=disable")
 	if err != nil {
 		panic(err)
 	}
@@ -55,14 +55,22 @@ func (post *PostDB) Create() (err error) {
 	return
 }
 
-//
-func GetPost(id int) (post PostDB, err error) {
-	post = PostDB{}
-
-	err = Db.QueryRow("SELECT id, content, author FROM posts WHRER id = $1", id).Scan(&post.Id, &post.Content, &post.Author)
+func (post *PostDB)Delete() (err error) {
+	_, err = Db.Exec("DELETE FROM posts where id = $1", post.Id)
 	return
 }
 
+//
+func GetPost(id int) (post PostDB, err error) {
+	post = PostDB{}
+	err = Db.QueryRow("SELECT id, content, author FROM posts WHERE id = $1", id).Scan(&post.Id, &post.Content, &post.Author)
+	return
+}
+
+func (post *PostDB) Update() (err error) {
+	_, err = Db.Exec("UPDATE posts SET content = $2, author = $3 WHERE id = $1", post.Id, post.Content, post.Author)
+	return
+}
 
 func databaseExample() {
 	post := PostDB{
@@ -71,9 +79,41 @@ func databaseExample() {
 	}
 
 	fmt.Println(post)
-	post.Create()
+	err := post.Create()
+	if err != nil {
+		fmt.Println("Create Error:", err)
+		return
+	}
 	fmt.Println(post)
 
-	readPost, _ := GetPost(post.Id)
+	readPost, err:= GetPost(post.Id)
+	if err != nil {
+		fmt.Println("Get Error:", err)
+		return
+	}
 	fmt.Println(readPost)
+
+	readPost.Content = "Bonjour Monde!"
+	readPost.Author = "Pierre"
+	err = readPost.Update()
+	if err != nil {
+		fmt.Println("Update Error:", err)
+		return
+	}
+
+	posts, err := Posts(post.Id)
+	fmt.Println("A", &err)
+	if err != nil {
+		fmt.Println("Posts Error:", err)
+		return
+	}else {
+		fmt.Println("B:", &err)
+	}
+	fmt.Println(posts)
+
+	err = readPost.Delete()
+	if err != nil {
+		fmt.Println("Delete Error:", err)
+		return
+	}
 }
