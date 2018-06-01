@@ -282,3 +282,18 @@ func encodeXml() {
 		return
 	}
 }
+
+///////////////////////////
+func xmlFunc() {
+	encodeXml()
+	createXml()
+	decodeXml()
+	parseXml()
+}
+
+func jsonFunc() {
+	encodeJson()
+	createJson()
+	decodeJson()
+	parseJson()
+}

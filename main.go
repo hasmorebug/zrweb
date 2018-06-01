@@ -10,25 +10,10 @@ func init() {
 
 
 func main() {
-	databaseExample()
+	//databaseExample()
 	//xmlFunc()
 	//jsonFunc()
 	//startServer()
-}
-
-///////////////////////////
-func xmlFunc() {
-	//encodeXml()
-	//createXml()
-	//decodeXml()
-	//parseXml()
-}
-
-func jsonFunc() {
-	//encodeJson()
-	//createJson()
-	//decodeJson()
-	//parseJson()
 }
 
 //
