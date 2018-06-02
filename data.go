@@ -297,3 +297,8 @@ func jsonFunc() {
 	decodeJson()
 	parseJson()
 }
+
+func formatExample() {
+	xmlFunc()
+	jsonFunc()
+}

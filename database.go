@@ -2,15 +2,15 @@ package main
 
 import (
 	"database/sql"
-	_ "github.com/lib/pq"
-	"fmt"
 	"errors"
+	"fmt"
+	_ "github.com/lib/pq"
 )
 
 type PostDB struct {
-	Id int
+	Id      int
 	Content string
-	Author	string
+	Author  string
 }
 
 //
@@ -27,7 +27,7 @@ func connectDB() {
 }
 
 //
-func Posts(limit int)(posts []PostDB, err error) {
+func Posts(limit int) (posts []PostDB, err error) {
 	rows, err := Db.Query("SELECT id, content, author FROM posts LIMIT $1", limit)
 	if err != nil {
 		return
@@ -56,7 +56,7 @@ func (post *PostDB) Create() (err error) {
 	return
 }
 
-func (post *PostDB)Delete() (err error) {
+func (post *PostDB) Delete() (err error) {
 	_, err = Db.Exec("DELETE FROM posts where id = $1", post.Id)
 	return
 }
@@ -75,8 +75,8 @@ func (post *PostDB) Update() (err error) {
 
 func databaseExample() {
 	post := PostDB{
-		Content:"Hello World!",
-		Author:"Sau Sheong",
+		Content: "Hello World!",
+		Author:  "Sau Sheong",
 	}
 
 	fmt.Println(post)
@@ -87,7 +87,7 @@ func databaseExample() {
 	}
 	fmt.Println(post)
 
-	readPost, err:= GetPost(post.Id)
+	readPost, err := GetPost(post.Id)
 	if err != nil {
 		fmt.Println("Get Error:", err)
 		return
@@ -107,7 +107,7 @@ func databaseExample() {
 	if err != nil {
 		fmt.Println("Posts Error:", err)
 		return
-	}else {
+	} else {
 		fmt.Println("B:", &err)
 	}
 	fmt.Println(posts)
@@ -121,17 +121,17 @@ func databaseExample() {
 
 ///////// /////////
 type PostDB2 struct {
-	Id	int
-	Content	string
-	Author	string
+	Id       int
+	Content  string
+	Author   string
 	Comments []CommentDB2
 }
 
 type CommentDB2 struct {
-	Id	int
+	Id      int
 	Content string
-	Author	string
-	Post	*PostDB2
+	Author  string
+	Post    *PostDB2
 }
 
 func (comment *CommentDB2) Create() (err error) {
@@ -160,7 +160,7 @@ func GetPostDB2(id int) (post PostDB2, err error) {
 	}
 
 	defer rows.Close()
-	if rows.Next(){
+	if rows.Next() {
 		comment := CommentDB2{Post: &post}
 		err = rows.Scan(&comment.Id, &comment.Content, &comment.Author)
 		if err != nil {
@@ -178,9 +178,9 @@ func (post *PostDB2) Create() (err error) {
 }
 
 func databaseExample2() {
-	post := PostDB2 {
-		Content:"Hello World!",
-		Author:"Sau Shenong",
+	post := PostDB2{
+		Content: "Hello World!",
+		Author:  "Sau Shenong",
 	}
 	err := post.Create()
 	if err != nil {
@@ -189,9 +189,9 @@ func databaseExample2() {
 	}
 
 	comment := CommentDB2{
-		Content:"Good post!",
-		Author:"Joe",
-		Post:&post,
+		Content: "Good post!",
+		Author:  "Joe",
+		Post:    &post,
 	}
 	err = comment.Create()
 	if err != nil {
@@ -207,4 +207,11 @@ func databaseExample2() {
 	fmt.Println(readPost)
 	fmt.Println(readPost.Comments)
 	fmt.Println(readPost.Comments[0].Post)
+}
+
+func databaseAllExample() {
+	ormExample2()
+	ormExample()
+	databaseExample2()
+	databaseExample()
 }
