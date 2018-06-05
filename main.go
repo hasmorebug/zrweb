@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"zrweb/gopg"
 )
 
 func init() {
@@ -11,7 +12,8 @@ func init() {
 }
 
 func main() {
-	storeDataExample()
+	gopg.PgExample()
+	//storeDataExample()
 	//databaseAllExample()
 	//formatExample()
 	//startServer()
