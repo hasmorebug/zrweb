@@ -12,8 +12,9 @@ func init() {
 }
 
 func main() {
-	golearn.StringExample()
 	//gopg.PgExample()
+	golearn.GoInterfaceExample()
+	//golearn.StringExample()
 	//storeDataExample()
 	//databaseAllExample()
 	//formatExample()

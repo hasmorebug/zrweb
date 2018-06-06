@@ -3,6 +3,7 @@ package golearn
 import (
 	"fmt"
 	"unicode/utf8"
+	"unsafe"
 )
 
 func StringExample() {
@@ -14,10 +15,10 @@ func utf8Example() {
 	const nihongo = "日本語ABC"
 	const nihongo2 = "日本語\xda\xce"
 	for index, runeValue := range nihongo {
-		fmt.Printf("%#U starts at byte position %d\n", runeValue, index)
+		fmt.Printf("%#U starts at byte position %d---sizeof:%d\n", runeValue, index, unsafe.Sizeof(nihongo))
 	}
 	for index, runeValue := range nihongo2 {
-		fmt.Printf("%#U starts at byte position %d\n", runeValue, index)
+		fmt.Printf("%#U starts at byte position %d--sizeof:%d\n", runeValue, index, unsafe.Sizeof(runeValue))
 	}
 
 	const nihongo3 = "日本語ABC"
