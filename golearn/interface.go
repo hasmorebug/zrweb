@@ -31,7 +31,7 @@ func (*Robot) Drive(from Location, to Location) {
 func GoInterfaceExample() {
 	h := Human{11}
 	//r := Robot{11}
-	//i := Driver(nil)
+	//	//i := Driver(nil)
 
 	hi := Driver(&h)
 	//ri := Driver(&r)
@@ -80,8 +80,8 @@ func GoInterfaceExample() {
 	faddr := reflect.ValueOf(h.Drive).Pointer()
 	fmt.Printf("[ func] address:0x%x\n", faddr)
 	fmt.Println("--- interface ---")
-	fmt.Printf("[ tab] address:0x%x--->", getAddrPtr(phi))
-	fmt.Printf("0x%x\n", getAddrValue(phi))
+	fmt.Printf("[ tab] address:0x%x--->", phi)
+	fmt.Printf("0x%x\n", *(*int)(phi))
 	fmt.Printf("[data] address:0x%x--->", getAddrPtr(pdata))
 	fmt.Printf("0x%x\n", getAddrValue(pdata))
 
@@ -89,7 +89,7 @@ func GoInterfaceExample() {
 	ptab := unsafe.Pointer(uintptr(getAddrValue(phi)))
 	ptpinfo := unsafe.Pointer(uintptr(ptab) + 8)
 	pfunc := unsafe.Pointer(uintptr(ptpinfo) + 8)
-	fmt.Printf("[interface_type_info] address:0x%x--->", getAddrPtr(ptab))
+	fmt.Printf("[interface_type_info] address:0x%x--->", ptab)
 	fmt.Printf("0x%x\n", getAddrValue(ptab))
 	fmt.Printf("[          type_info] address:0x%x--->", getAddrPtr(ptpinfo))
 	fmt.Printf("0x%x\n", getAddrValue(ptpinfo))
