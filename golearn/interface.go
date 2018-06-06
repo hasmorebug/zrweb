@@ -2,6 +2,7 @@ package golearn
 
 import (
 	"fmt"
+	"reflect"
 	"unsafe"
 )
 
@@ -16,7 +17,7 @@ type Human struct {
 }
 
 func (h *Human) Drive(from Location, to Location) {
-
+	fmt.Print("Human Driver")
 }
 
 type Robot struct {
@@ -73,11 +74,43 @@ func GoInterfaceExample() {
 	phi := unsafe.Pointer(&hi)
 	pdata := unsafe.Pointer(uintptr(phi) + 8)
 
-	fmt.Printf("[sh] address:0x%x--->", ph)
-	fmt.Printf(":%d\n", *(*int)(ph))
-	fmt.Println("---------")
-	fmt.Printf("[ih] address:0x%x--->", phi)
-	fmt.Printf("0x%x\n", *(*int)(phi))
-	fmt.Printf("[pd] address:0x%x--->", pdata)
-	fmt.Printf("0x%x\n", *(*int)(pdata))
+	fmt.Println("=== struct ===")
+	fmt.Printf("[human] address:0x%x--->", getAddrPtr(ph))
+	fmt.Printf(":%d\n", getAddrValue(ph))
+	faddr := reflect.ValueOf(h.Drive).Pointer()
+	fmt.Printf("[ func] address:0x%x\n", faddr)
+	fmt.Println("--- interface ---")
+	fmt.Printf("[ tab] address:0x%x--->", getAddrPtr(phi))
+	fmt.Printf("0x%x\n", getAddrValue(phi))
+	fmt.Printf("[data] address:0x%x--->", getAddrPtr(pdata))
+	fmt.Printf("0x%x\n", getAddrValue(pdata))
+
+	fmt.Println("*** tab ***")
+	ptab := unsafe.Pointer(uintptr(getAddrValue(phi)))
+	ptpinfo := unsafe.Pointer(uintptr(ptab) + 8)
+	pfunc := unsafe.Pointer(uintptr(ptpinfo) + 8)
+	fmt.Printf("[interface_type_info] address:0x%x--->", getAddrPtr(ptab))
+	fmt.Printf("0x%x\n", getAddrValue(ptab))
+	fmt.Printf("[          type_info] address:0x%x--->", getAddrPtr(ptpinfo))
+	fmt.Printf("0x%x\n", getAddrValue(ptpinfo))
+	fmt.Printf("[               func] address:0x%x--->", getAddrPtr(pfunc))
+	fmt.Printf("0x%x\n", getAddrValue(pfunc))
+
+	fmt.Println("&&& InterfaceTypeInfo &&&")
+	piti := unsafe.Pointer(uintptr(getAddrValue(ptab)))
+	fmt.Printf("[tag] address:0x%x--->", getAddrPtr(piti))
+	fmt.Printf("0x%x\n", getAddrValue(piti))
+
+	fmt.Println("@@@ TypeInfo @@@")
+	pti := unsafe.Pointer(uintptr(getAddrValue(ptpinfo)))
+	fmt.Printf("[tag] address:0x%x--->", getAddrPtr(pti))
+	fmt.Printf("0x%x\n", getAddrValue(pti))
+}
+
+func getAddrPtr(p unsafe.Pointer) *int {
+	return (*int)(p)
+}
+
+func getAddrValue(p unsafe.Pointer) int {
+	return *(*int)(p)
 }
