@@ -6,6 +6,103 @@ import (
 	"unsafe"
 )
 
+type User struct {
+	id   int
+	name string
+}
+
+type iface struct {
+	itab uintptr
+	data uintptr
+}
+
+type Stringer interface {
+	String() string
+}
+
+type Printer interface {
+	Stringer
+	Print()
+}
+
+func (self *User) String() string {
+	return fmt.Sprintf("user %d, %s", self.id, self.name)
+}
+
+func (self *User) Print() {
+	fmt.Println(self.String())
+}
+
+func GoInterfaceExample() {
+	////////////////////////////////////////////////////
+	var o Printer = &User{1, "Tom"}
+	var s Stringer = o
+	fmt.Println(s.String())
+	//////////////////////////////////////////////////
+	//var o interface{} = &User{1, "Tom"}
+	//
+	//if i, ok := o.(fmt.Stringer); ok {
+	//	fmt.Println(i)
+	//}
+	//
+	////u := o.(User) error
+	//u := o.(*User)
+	//fmt.Println(u)
+	//
+	//switch v := o.(type) {
+	//case nil:
+	//	fmt.Println("nil")
+	////case fmt.Stringer:
+	////	fmt.Println("Stringer", v)
+	//case func() string:
+	//	fmt.Println("func() string", v)
+	//case *User:
+	//	fmt.Printf("*User %d, %s\n", v.id, v.name)
+	//default:
+	//	fmt.Println("unknow")
+	//}
+	///////////////////////////////////////
+	//var a interface{} = nil
+	//var b interface{} = (*int)(nil)
+	//
+	//ia := *(*iface)(unsafe.Pointer(&a))
+	//ib := *(*iface)(unsafe.Pointer(&b))
+	//
+	//fmt.Println(a == nil, ia)
+	//fmt.Println(b == nil, ib, reflect.ValueOf(b).IsNil())
+	//////////////////////////////////////
+	//u := User{1, "Tom"}
+	//var vi, pi interface{} = u, &u
+	//
+	////vi.(User).name = "Jack"
+	//pi.(*User).name = "Ma"
+	//
+	//fmt.Printf("%v\n", vi.(User))
+	//fmt.Printf("%v\n", pi.(*User))
+	/////////////////////////////////////
+	//u := User{1, "Tom"}
+	//var i interface{} = u
+	//
+	//u.id = 2
+	//u.name = "Jack"
+	//
+	//fmt.Printf("%v\n", u)
+	//fmt.Printf("%v\n", i.(User))
+	/////////////////////////////////////
+	//t := Tester{&User{2, "Ada"}}
+	//fmt.Println(t.s.String())
+	/////////////////////////////////////
+	//var t Printer = &User{1, "Tom"}
+	//t.Print()
+}
+
+/*****************************************************************************/
+//type Tester struct {
+//	s interface {
+//		String() string
+//	}
+//}
+
 type Location int32
 
 type Driver interface {
@@ -28,7 +125,7 @@ func (*Robot) Drive(from Location, to Location) {
 
 }
 
-func GoInterfaceExample() {
+func maybeError() {
 	h := Human{11}
 	//r := Robot{11}
 	//	//i := Driver(nil)
@@ -47,28 +144,28 @@ func GoInterfaceExample() {
 	//fmt.Printf("interface pointer [Driver] size:%d-type:%v\n", unsafe.Sizeof(pi), reflect.TypeOf(pi))
 
 	/*  内存布局简易示意图
-			phi ---> ------------
-					 | tab_ptr  |----------------------> |--------------------|
-				     |----------|                        | interface_info_ptr |-------------------------->|------|
-					 | data_ptr |-----                   |--------------------|                           | tags | --->|-----|
-			         |----------|    |                   | type_info_ptr      |----------------           |------|     |     |
-			          (hi : Driver)  |                   |--------------------|               |                        |*****|
-									 |                   | func_ptr ...       |               |                        |     |
-			                         |                   | *******************|               |                        |*****|
-			            ph ---> ----------                                                    |                        |     |
-			                    |        |                                                    |                        |*****|
-			                    |--------|                                                    |
-			                       (h : Human)                                                |
-		                                                                             |------------|
-		           |------|<---------------------------------------------------------| member_ptr |
-		           | tag  |    (array)                                               |------------|
-			       |------|
-	               | addr |
-		           |******|
-		           | tag  |
-			       |******|
-	               | addr |
-		           |******|
+	phi ---> ------------
+			 | tab_ptr  |----------------------> |--------------------|
+			 |----------|                        | interface_info_ptr |-------------------------->|------|
+			 | data_ptr |-----                   |--------------------|                           | tags | --->|-----|
+			 |----------|    |                   | type_info_ptr      |----------------           |------|     |     |
+			  (hi : Driver)  |                   |--------------------|               |                        |*****|
+							 |                   | func_ptr ...       |               |                        |     |
+							 |                   | *******************|               |                        |*****|
+				ph ---> ----------                                                    |                        |     |
+						|        |                                                    |                        |*****|
+						|--------|                                                    |
+						   (h : Human)                                                |
+																			 |------------|
+		   |------|<---------------------------------------------------------| member_ptr |
+		   | tag  |    (array)                                               |------------|
+		   |------|
+		   | addr |
+		   |******|
+		   | tag  |
+		   |******|
+		   | addr |
+		   |******|
 	*/
 	ph := unsafe.Pointer(&h)
 	phi := unsafe.Pointer(&hi)
