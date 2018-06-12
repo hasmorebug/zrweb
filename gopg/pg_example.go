@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
+	"log"
+	"time"
 )
 
 type User struct {
@@ -23,6 +25,23 @@ type Story struct {
 	Author   *User
 }
 
+func NewDb() *pg.DB {
+	return pg.Connect(&pg.Options{
+		User: "postgres",
+	})
+}
+
+func ShowQueryLine(db *pg.DB) {
+	db.OnQueryProcessed(func(event *pg.QueryProcessedEvent) {
+		query, err := event.FormattedQuery()
+		if err != nil {
+			panic(err)
+		}
+
+		log.Printf("[%s] %s", time.Since(event.StartTime), query)
+	})
+}
+
 func (s Story) String() string {
 	return fmt.Sprintf("Story<%d %s %s>", s.Id, s.Title, s.Author)
 }
@@ -34,9 +53,7 @@ func PgExample() {
 	s := &Story{Id: 10010, Title: "Golang In Action", AuthorId: u.Id, Author: u}
 	fmt.Println(s.String())
 
-	db := pg.Connect(&pg.Options{
-		User: "postgres",
-	})
+	db := NewDb()
 	defer db.Close()
 
 	err := createSchema(db)

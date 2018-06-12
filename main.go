@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"zrweb/gopg"
 )
 
 func init() {
@@ -11,6 +12,7 @@ func init() {
 }
 
 func main() {
+	gopg.QueryExmaple()
 	//gopg.PgExample()
 	//golearn.GoInterfaceExample()
 	//golearn.StringExample()
