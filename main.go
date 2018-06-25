@@ -12,7 +12,7 @@ func init() {
 }
 
 func main() {
-	gopg.QueryExmaple()
+	gopg.QueryExample()
 	//gopg.PgExample()
 	//golearn.GoInterfaceExample()
 	//golearn.StringExample()

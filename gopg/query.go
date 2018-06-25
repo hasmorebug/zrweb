@@ -14,6 +14,15 @@ type Author struct {
 	AvatarId int
 }
 
+func (a *Author) String() {
+	fmt.Printf("author: (%d)-[%s]\n", a.Id, a.Name)
+	if len(a.Books) > 0 {
+		for _, b := range a.Books {
+			fmt.Printf("\t %d-%s-%s\n", b.Id, b.Title, b.Author.Name)
+		}
+	}
+}
+
 type Book struct {
 	Id        int
 	Title     string
@@ -25,9 +34,27 @@ type Book struct {
 	UpdatedAt time.Time
 }
 
-func QueryExmaple() {
+func QueryExample() {
+	example3()
 	//example2()
-	example1()
+	//example1()
+}
+
+func example3() {
+	db := NewDb()
+	defer db.Close()
+	ShowQueryLine(db)
+
+	a := Author{}
+	a.String()
+
+	q := db.Model(&a).
+		Column("Books").
+		Column("Books.Author").
+		Where("id = ?", 3)
+
+	q.Select()
+	a.String()
 }
 
 func example2() {
@@ -94,7 +121,7 @@ func example1() {
 	err := db.Model(&author).
 		Column("id").
 		Column("name").
-		Where("id = ?", 10).
+		Where("id = ?", 1).
 		Select()
 
 	if err != nil {
