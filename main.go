@@ -1,9 +1,6 @@
 package main
 
-import (
-	"net/http"
-	"zrweb/gopg"
-)
+import "zrweb/zlearn"
 
 func init() {
 	//initGorm()
@@ -12,7 +9,8 @@ func init() {
 }
 
 func main() {
-	gopg.QueryExample()
+	zlearn.HttpRouterExample()
+	//gopg.QueryExample()
 	//gopg.PgExample()
 	//golearn.GoInterfaceExample()
 	//golearn.StringExample()
@@ -20,15 +18,4 @@ func main() {
 	//databaseAllExample()
 	//formatExample()
 	//startServer()
-}
-
-//
-func startServer() {
-	//initHandler()
-
-	server := http.Server{
-		Addr: ":8080",
-	}
-
-	server.ListenAndServe()
 }
